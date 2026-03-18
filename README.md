@@ -16,3 +16,26 @@ Streamlit + PostgreSQL · runs locally · live data.
 
 ## Setup
 ```bash
+git clone https://github.com/tu-usuario/energy-analytics.git
+cd energy-analytics
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+streamlit run app.py
+```
+
+---
+
+## Analysis pages
+
+| Page | Question |
+|------|----------|
+| Weekly Occupancy | Which time slots fill on their own? |
+
+---
+
+## Notes
+
+- `.env` is gitignored — never commit credentials  
+- All data is read-only — no writes from this app
