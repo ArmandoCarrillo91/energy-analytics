@@ -1,13 +1,18 @@
 # Energy Cycle Studio · Analytics
 
-Internal analytics · Streamlit + PostgreSQL · local only.
+Internal analytics platform for Energy Cycle Studio, Colima MX.  
+Streamlit + PostgreSQL · runs locally · live data.
+
+---
+
+## Stack
+
+- [Streamlit](https://streamlit.io/) — data app framework  
+- [PostgreSQL](https://www.postgresql.org/) — production database via Strapi  
+- [Plotly](https://plotly.com/python/) — interactive charts  
+- [Pandas](https://pandas.pydata.org/) — data manipulation  
+
+---
 
 ## Setup
 ```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-streamlit run app.py
-\```
-```
