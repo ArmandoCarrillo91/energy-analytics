@@ -1,66 +1,66 @@
 # Energy Analytics
 
-Dashboard de analytics para Energy Cycle Studio — Colima, México.
+Business intelligence dashboard for indoor cycling studios.
 
-## ¿Qué es esto?
-Plataforma de análisis descriptivo construida en Python con Dash y Apache ECharts. Permite a Juan, dueño de Energy, monitorear el estado de su negocio en tiempo real.
+## Overview
+Descriptive analytics platform built with Python, Dash, and Apache ECharts. Provides studio owners with real-time visibility into their business — clients, packages, classes, revenue, and retention.
 
 ## Stack
-- **Python** — lenguaje principal
-- **Dash** — framework web
-- **Apache ECharts** — visualizaciones
-- **PostgreSQL** — base de datos
-- **SQLAlchemy** — conexión a BD
-- **pandas** — transformación de datos
-- **Vercel** — deploy
+- **Python** — core language
+- **Dash** — web framework
+- **Apache ECharts** — data visualization
+- **PostgreSQL** — database
+- **SQLAlchemy** — database connection
+- **pandas** — data transformation
+- **Vercel** — deployment
 
-## Estructura
+## Project Structure
 ```
 energy-analytics/
 ├── app.py          ← entry point
-├── data.py         ← queries SQL
-├── layout.py       ← componentes visuales
+├── data.py         ← SQL queries
+├── layout.py       ← visual components
 ├── assets/         ← CSS
-├── .env            ← credenciales (no se sube)
+├── .env            ← credentials (not committed)
 ├── requirements.txt
 └── README.md
 ```
 
-## Cómo correr el proyecto
+## Getting Started
 
-1. Clona el repo
+1. Clone the repository
 ```bash
 git clone https://github.com/ArmandoCarrillo91/energy-analytics.git
 cd energy-analytics
 ```
 
-2. Crea el ambiente virtual
+2. Create and activate virtual environment
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-3. Crea tu archivo `.env` con las credenciales
+3. Create a `.env` file with your database credentials
 ```
-DB_HOST=tu_host
+DB_HOST=your_host
 DB_PORT=5432
-DB_NAME=tu_database
-DB_USER=tu_usuario
-DB_PASSWORD=tu_password
+DB_NAME=your_database
+DB_USER=your_user
+DB_PASSWORD=your_password
 ```
 
-4. Corre el proyecto
+4. Run the app
 ```bash
 python3 app.py
 ```
 
-5. Abre tu browser en `http://127.0.0.1:8050`
+5. Open your browser at `http://127.0.0.1:8050`
 
-## Estado del proyecto
-- [x] Fase 1 — EDA Clientes y Paquetes
-- [x] Conexión a BD
-- [x] Primer chart — clientes por mes
-- [ ] Fase 2 — EDA Clases y Coaches
-- [ ] Dashboard completo
-- [ ] Deploy en Vercel
+## Roadmap
+- [x] Phase 1 — Clients & Packages EDA
+- [x] Database connection
+- [x] First chart — registered clients over time
+- [ ] Phase 2 — Classes & Coaches EDA
+- [ ] Full dashboard
+- [ ] Vercel deployment
