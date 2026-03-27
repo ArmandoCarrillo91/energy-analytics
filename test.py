@@ -1,5 +1,7 @@
 import data
 
-df = data.get_clients_packages()
-print(df.head())
-print(data.total_clients(df))
+df = data.fetch_clients_packages()
+
+
+print(data.count_unique_clients(df))
+print(data.get_clients_per_month(df))

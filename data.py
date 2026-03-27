@@ -35,9 +35,9 @@ def fetch_clients_packages():
 def count_unique_clients(df):
     return df["client_id"].nunique()
 
-def total_clients_per_month(df):
-    get_clients_per_month = df.copy()
-    get_clients_per_month["c_created_at"] = get_clients_per_month["c_created_at"].dt.tz_convert(None)
-    get_clients_per_month["Period"] = get_clients_per_month["c_created_at"].dt.to_period("M")
-    result = get_clients_per_month.groupby("period")["client_id"].nunique().reset_index()
+def get_clients_per_month(df):
+    df_work = df.copy()
+    df_work["c_created_at"] = df_work["c_created_at"].dt.tz_localize(None)
+    df_work["period"] = df_work["c_created_at"].dt.to_period("M")
+    result = df_work.groupby("period")["client_id"].nunique().reset_index()
     return result
