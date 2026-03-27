@@ -7,7 +7,7 @@ load_dotenv()
 
 engine = create_engine(f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}")
 
-def get_clients_packages():
+def fetch_clients_packages():
     sql = """
             SELECT
                 c.id as client_id
@@ -32,5 +32,12 @@ def get_clients_packages():
     df = read_sql(sql, engine)
     return df
     
-def total_clients(df):
+def count_unique_clients(df):
     return df["client_id"].nunique()
+
+def total_clients_per_month(df):
+    get_clients_per_month = df.copy()
+    get_clients_per_month["c_created_at"] = get_clients_per_month["c_created_at"].dt.tz_convert(None)
+    get_clients_per_month["Period"] = get_clients_per_month["c_created_at"].dt.to_period("M")
+    result = get_clients_per_month.groupby("period")["client_id"].nunique().reset_index()
+    return result
