@@ -8,8 +8,9 @@ def build_clients_chart(df):
     periods = df["period"].astype(str).tolist()
     values = df["client_id"].tolist()
     option = {
+        "textStyle": config.CHART_BASE["textStyle"],
         "title": {
-            "text": "New Clients Over Time",
+            "text": "Client Growth",
             "top": 15,
             "left": "center",
             "textStyle": {

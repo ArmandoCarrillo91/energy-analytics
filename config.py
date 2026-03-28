@@ -16,6 +16,7 @@ COLORS = {
 CHART_BASE = {
     "backgroundColor": COLORS["background"],
     "textStyle": {
-        "color": COLORS["text"]
+        "color": COLORS["text"],
+        "fontFamily": "JetBrains Mono, monospace"
     }
 }

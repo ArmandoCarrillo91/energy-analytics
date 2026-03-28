@@ -26,8 +26,8 @@ def fetch_clients_packages():
             FROM clients c
             LEFT JOIN client_packages_client_lnk cpcl ON c.id = cpcl.client_id 
             LEFT JOIN client_packages p on cpcl.client_package_id = p.id 
-            INNER JOIN client_packages_package_lnk cpp on p.id = cpp.client_package_id
-            INNER JOIN packages pack on cpp.package_id = pack.id
+            LEFT JOIN client_packages_package_lnk cpp on p.id = cpp.client_package_id
+            LEFT JOIN packages pack on cpp.package_id = pack.id
         """
     df = read_sql(sql, engine)
     return df
@@ -41,3 +41,33 @@ def get_clients_per_month(df):
     df_work["period"] = df_work["c_created_at"].dt.to_period("M")
     result = df_work.groupby("period")["client_id"].nunique().reset_index()
     return result
+
+def get_packages_per_month(df):
+    df_work = df.copy()
+    df_work = df_work[df_work["package_id"].notna()]
+    df_work["p_created_at"] = df_work["p_created_at"].dt.tz_localize(None)
+    df_work["period"] = df_work["p_created_at"].dt.to_period("M")
+    result = df_work.groupby("period")["package_id"].nunique().reset_index()
+    return result
+
+def count_clients_with_packages(df):
+    df_work = df[df["package_id"].notna()]
+    return df_work["client_id"].nunique()
+
+def count_clients_without_package(df):
+    df_work = df[df["package_id"].isna()]
+    return df_work["client_id"].nunique()
+
+def count_total_packages(df):
+    df_work = df[df["package_id"].notna()]
+    return df["package_id"].nunique()
+
+def count_gifted_packages(df):
+    df_work = df[
+        (df["package_sold"] == 0) | (df["package_sold"].isna())
+    ]
+    return df_work["package_id"].nunique()
+
+def count_sold_packages(df):
+    df_work = df[df["package_sold"] > 0]
+    return df_work["package_id"].nunique()  

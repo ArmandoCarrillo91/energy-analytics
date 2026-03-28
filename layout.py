@@ -3,11 +3,14 @@ from dash_echarts import DashECharts
 import data
 import config
 import charts.clients as clients
+import charts.packages as packages
 
 def get_layout():
     df = data.fetch_clients_packages()
     df_monthly = data.get_clients_per_month(df)
+    df_packages = data.get_packages_per_month(df)
     total = data.count_unique_clients(df)
+    clients_with_packages = data.count_clients_with_packages(df)
     kpi_total_clients = html.Div(
         style={
             "background": config.COLORS["card"],
@@ -37,23 +40,63 @@ def get_layout():
         ],
     )
 
+    kpi_clients_with_packages = html.Div(
+        style={
+            "background": config.COLORS["card"],
+            "padding": "16px 20px",
+            "borderRadius": "12px",
+            "border": f"1px solid {config.COLORS['border']}",
+            "minWidth": "160px",
+            "textAlign": "center"
+        },
+        children=[
+            html.P("Clients With Package", style={
+                "color": config.COLORS["muted"],
+                "margin": "0",
+                "fontSize": "12px",
+                "letterSpacing": "0.1em",
+                "textTransform": "uppercase"
+            }),
+            html.H2(f"{clients_with_packages:,}", style={
+                "color": config.COLORS["text"],
+                "margin": "0",
+                "fontSize": "48px",
+                "fontWeight": "700",
+                "letterSpacing": "-1px"
+            })
+        ]
+    )
     chart_clients = html.Div(
-    style={
-        "borderRadius": "12px",
-        "border": f"1px solid {config.COLORS['border']}",
-        "overflow": "hidden",
-        "background": config.COLORS["card"]
-    },
-    children=[
-        DashECharts(
-            option=clients.build_clients_chart(df_monthly),
-            style={
-                "height": "400px",
-                "width": "100%",
-            }
-        )
-    ]
-)
+        style={
+            "borderRadius": "12px",
+            "border": f"1px solid {config.COLORS['border']}",
+            "overflow": "hidden",
+            "background": config.COLORS["card"]
+        },
+        children=[
+            DashECharts(
+                option=clients.build_clients_chart(df_monthly),
+                style={
+                    "height": "400px",
+                    "width": "100%",
+                }
+            )
+        ]
+    )       
+    chart_packages = html.Div(
+        style={
+            "borderRadius": "12px",
+            "border": f"1px solid {config.COLORS['border']}",
+            "overflow": "hidden",
+            "background": config.COLORS["card"]
+        },
+        children=[
+            DashECharts(
+                option=packages.build_packages_chart(df_packages),
+                style={"height": "400px", "width": "100%"}
+            )
+        ]
+    )
 
     return html.Div(
         style={
@@ -89,7 +132,7 @@ def get_layout():
                     "gap": "16px",
                     "marginBottom": "24px"
                 },
-                children=[kpi_total_clients]
+                children=[kpi_total_clients, kpi_clients_with_packages]
             ),
             # Charts
             html.Div(
@@ -98,7 +141,7 @@ def get_layout():
                     "gridTemplateColumns": "repeat(auto-fill, minmax(500px, 1fr))",
                     "gap": "16px"
                 },
-                children=[chart_clients]
+                children=[chart_clients, chart_packages]
             )
         ]
 )

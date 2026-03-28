@@ -2,10 +2,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 body {
-    font-family: 'JetBrains Mono', monospace;
-    background-color: #0F1117;
-
+    background-color: #FFFAFA;
 }
