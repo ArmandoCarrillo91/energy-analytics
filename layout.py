@@ -100,7 +100,10 @@ def get_layout():
             "padding": "16px 20px",
             "borderRadius": "12px",
             "border": f"1px solid {config.COLORS['border']}",
-            "textAlign": "center"
+            "textAlign": "center",
+            "display": "flex",
+            "flexDirection": "column",
+            "justifyContent": "space-between"
         },
         children=[
             html.P(f"CONVERSION — {total:,} clients", style={
@@ -175,7 +178,10 @@ def get_layout():
             "padding": "16px 20px",
             "borderRadius": "12px",
             "border": f"1px solid {config.COLORS['border']}",
-            "textAlign": "center"
+            "textAlign": "center",
+            "display": "flex",
+            "flexDirection": "column",
+            "justifyContent": "space-between"
         },
         children=[
             html.P(f"Packages — {total_packages:,} total", style={
