@@ -58,7 +58,8 @@ def build_packages_chart(df):
             "type": "value",
             "name": "Packages",
             "nameLocation": "middle",
-            "nameGap": 40,
+            "nameGap": config.CHART_AXIS["nameGap"],
+            "nameTextStyle": config.CHART_AXIS["nameTextStyle"],
             "nameRotate": 90,
             "axisLabel": {
                 "color": config.COLORS["text"],

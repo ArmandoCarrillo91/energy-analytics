@@ -5,23 +5,19 @@ def build_revenue_chart(df):
     periods = df["period"].astype(str).tolist()
     data = []
     for v in df["package_sold"].tolist():
-        real = round(v)
         k = round(v / 1000, 1)
-        formatted = f"{real:,}"
+        real = round(v)
         data.append({
             "value": real,
             "label": {
                 "formatter": f"${k}K"
-            },
-            "tooltip": {
-                "formatter": f"${formatted}"
             }
         })
 
     option = {
         "textStyle": config.CHART_BASE["textStyle"],
         "title": {
-            "text": "Monthly Revenue",
+            "text": "Sales Performance",
             "left": "center",
             "top": 10,
             "textStyle": {"color": config.COLORS["text"]}
@@ -68,12 +64,18 @@ def build_revenue_chart(df):
             "type": "value",
             "name": "Revenue",
             "nameLocation": "middle",
-            "nameGap": 60,
+            "nameTextStyle": {
+                "color": config.COLORS["muted"],
+                "fontSize": 12,
+                "fontFamily": "JetBrains Mono, monospace"
+            },
+            "nameGap": 70,
+            "nameTextStyle": config.CHART_AXIS["nameTextStyle"],
             "nameRotate": 90,
             "axisLabel": {
             "color": config.COLORS["text"],
             "fontFamily": "JetBrains Mono, monospace",
-            "formatter": "${value}K"
+            "formatter": "${value}"
         },
             "splitLine": {
                 "lineStyle": {
@@ -87,6 +89,7 @@ def build_revenue_chart(df):
                 "name": "Revenue",
                 "type": "line",
                 "data": data,
+                "smooth": True,
                 "label": {
                     "show": True,
                     "position": "top",

@@ -20,3 +20,12 @@ CHART_BASE = {
         "fontFamily": "JetBrains Mono, monospace"
     }
 }
+
+CHART_AXIS = {
+    "nameGap": 50,
+    "nameTextStyle": {
+        "color": "#7A7A7A",
+        "fontSize": 12,
+        "fontFamily": "JetBrains Mono, monospace"
+    }
+}

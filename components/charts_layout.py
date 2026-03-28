@@ -5,6 +5,8 @@ import data
 import charts.clients as clients
 import charts.packages as packages
 import charts.revenue as revenue
+from components.insight import build_insight
+
 
 
 def build_charts(df):
@@ -58,10 +60,13 @@ def build_charts(df):
     )
 
     return html.Div(
-        style={
-            "display": "grid",
-            "gridTemplateColumns": "1fr 1fr",
-            "gap": "16px"
-        },
-        children=[chart_clients, chart_packages, chart_revenue]
+        style={"display": "flex", "flexDirection": "column", "gap": "16px"},
+        children=[
+            html.Div(
+                style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "16px"},
+                children=[chart_clients, chart_packages]
+            ),
+            build_insight(df),
+            chart_revenue
+        ]
     )

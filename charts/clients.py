@@ -65,7 +65,8 @@ def build_clients_chart(df):
                 "fontFamily": "JetBrains Mono, monospace"
             },
             "nameLocation": "middle",
-            "nameGap": 40,
+            "nameGap": config.CHART_AXIS["nameGap"],
+            "nameTextStyle": config.CHART_AXIS["nameTextStyle"],
             "nameRotate": 90,
             "splitLine": {
             "lineStyle": {
