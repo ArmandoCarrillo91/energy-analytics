@@ -33,7 +33,7 @@ def get_layout():
             "justifyContent": "center"
         },
         children=[
-            html.P("TOTAL CLIENTS", style={
+            html.P("Total Clients", style={
                 "color": config.COLORS["muted"],
                 "margin": "0",
                 "fontSize": "10px",
@@ -46,7 +46,7 @@ def get_layout():
                 "fontWeight": "500",
                 "letterSpacing": "-1px"
             }),
-            html.P("registrados", style={
+            html.P("registered", style={
                 "color": config.COLORS["muted"],
                 "margin": "0",
                 "fontSize": "11px"
@@ -63,7 +63,7 @@ def get_layout():
             "textAlign": "center"
         },
         children=[
-            html.P("CONVERSIÓN", style={
+            html.P("Conversion", style={
                 "color": config.COLORS["muted"],
                 "margin": "0 0 12px 0",
                 "fontSize": "10px",
@@ -79,7 +79,7 @@ def get_layout():
                             "fontSize": "24px",
                             "fontWeight": "500"
                         }),
-                        html.P("compraron", style={
+                        html.P("purchased", style={
                             "color": config.COLORS["muted"],
                             "margin": "0",
                             "fontSize": "10px"
@@ -97,7 +97,7 @@ def get_layout():
                             "fontSize": "24px",
                             "fontWeight": "500"
                         }),
-                        html.P("nunca compraron", style={
+                        html.P("never purchased", style={
                             "color": config.COLORS["muted"],
                             "margin": "0",
                             "fontSize": "10px"
@@ -121,7 +121,7 @@ def get_layout():
                     })
                 ]
             ),
-            html.P(f"{conversion_rate}% tasa de conversión", style={
+            html.P(f"{conversion_rate}% conversion rate", style={
                 "color": config.COLORS["muted"],
                 "margin": "4px 0 0 0",
                 "fontSize": "10px"
@@ -138,7 +138,7 @@ def get_layout():
             "textAlign": "center"
         },
         children=[
-            html.P(f"PAQUETES — {total_packages:,} total", style={
+            html.P(f"Packages — {total_packages:,} total", style={
                 "color": config.COLORS["muted"],
                 "textAlign": "center",
                 "margin": "0 0 12px 0",
@@ -155,7 +155,7 @@ def get_layout():
                             "fontSize": "24px",
                             "fontWeight": "500"
                         }),
-                        html.P("vendidos", style={
+                        html.P("sold", style={
                             "color": config.COLORS["muted"],
                             "margin": "0",
                             "fontSize": "10px",
@@ -174,7 +174,7 @@ def get_layout():
                             "fontSize": "24px",
                             "fontWeight": "500"
                         }),
-                        html.P("regalados", style={
+                        html.P("gifted", style={
                             "color": config.COLORS["muted"],
                             "margin": "0",
                             "fontSize": "10px"
@@ -198,7 +198,7 @@ def get_layout():
                     })
                 ]
             ),
-            html.P(f"{packages_sold_rate}% paquetes con ingreso", style={
+            html.P(f"{packages_sold_rate}% packages with revenue", style={
                 "color": config.COLORS["muted"],
                 "margin": "4px 0 0 0",
                 "fontSize": "10px"
@@ -244,22 +244,68 @@ def get_layout():
         },
         children=[
             # Header
-            html.Div(
-                style={"marginBottom": "32px"},
-                children=[
-                    html.H1("Pulso", style={
-                        "color": config.COLORS["text"],
-                        "fontSize": "32px",
-                        "fontWeight": "700",
-                        "margin": "0"
-                    }),
-                    html.P("Vista ejecutiva del negocio", style={
-                        "color": config.COLORS["muted"],
-                        "fontSize": "14px",
-                        "margin": "0"
-                    })
-                ]
-            ),
+html.Div(
+    style={
+        "background": config.COLORS["card"],
+        "borderRadius": "12px",
+        "border": f"1px solid {config.COLORS['border']}",
+        "padding": "20px 28px",
+        "display": "flex",
+        "justifyContent": "space-between",
+        "alignItems": "center",
+        "marginBottom": "24px"
+    },
+    children=[
+        html.Div(
+            style={"display": "flex", "flexDirection": "column", "gap": "4px"},
+            children=[
+                html.Div(
+                    style={"display": "flex", "alignItems": "center", "gap": "10px"},
+                    children=[
+                        html.Div(style={
+                            "width": "8px",
+                            "height": "8px",
+                            "borderRadius": "50%",
+                            "background": config.COLORS["primary"]
+                        }),
+                        html.Span("ENERGY CYCLE STUDIO", style={
+                            "fontSize": "11px",
+                            "color": config.COLORS["muted"],
+                            "letterSpacing": "0.1em"
+                        })
+                    ]
+                ),
+                html.H1("Pulso", style={
+                    "color": config.COLORS["text"],
+                    "fontSize": "28px",
+                    "fontWeight": "500",
+                    "margin": "0",
+                    "lineHeight": "1"
+                }),
+                html.P("Vista ejecutiva del negocio", style={
+                    "color": config.COLORS["muted"],
+                    "fontSize": "12px",
+                    "margin": "0"
+                })
+            ]
+        ),
+        html.Div(
+            style={"display": "flex", "flexDirection": "column", "alignItems": "flex-end", "gap": "2px"},
+            children=[
+                html.Span("PERIOD", style={
+                    "fontSize": "10px",
+                    "color": config.COLORS["muted"],
+                    "letterSpacing": "0.08em"
+                }),
+                html.Span("Mar 2026", style={
+                    "fontSize": "14px",
+                    "fontWeight": "500",
+                    "color": config.COLORS["text"]
+                })
+            ]
+        )
+    ]
+),
             # KPIs
             html.Div(
                 style={
