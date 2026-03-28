@@ -21,38 +21,78 @@ def get_layout():
     conversion_rate = round(clients_with_packages / total * 100)
     packages_sold_rate = round(sold_packages / total_packages * 100)
 
-    kpi_universe = html.Div(
-        style={
-            "background": config.COLORS["card"],
-            "padding": "16px 20px",
-            "borderRadius": "12px",
-            "border": f"1px solid {config.COLORS['border']}",
-            "textAlign": "center",
-            "display": "flex",
-            "flexDirection": "column",
-            "justifyContent": "center"
-        },
-        children=[
-            html.P("Total Clients", style={
-                "color": config.COLORS["muted"],
-                "margin": "0",
-                "fontSize": "10px",
-                "letterSpacing": "0.08em"
-            }),
-            html.H2(f"{total:,}", style={
-                "color": config.COLORS["text"],
-                "margin": "6px 0",
-                "fontSize": "40px",
-                "fontWeight": "500",
-                "letterSpacing": "-1px"
-            }),
-            html.P("registered", style={
-                "color": config.COLORS["muted"],
-                "margin": "0",
-                "fontSize": "11px"
-            })
-        ]
-    )
+    revenue = data.total_revenue(df)
+    revenue_month = data.revenue_this_month(df)
+    ticket_avg = data.avg_ticket(df)
+
+    kpi_revenue = html.Div(
+    style={
+        "background": config.COLORS["card"],
+        "padding": "20px",
+        "borderRadius": "12px",
+        "border": f"2px solid {config.COLORS['primary']}",
+    },
+    children=[
+        html.P("TOTAL REVENUE", style={
+            "color": config.COLORS["muted"],
+            "margin": "0 0 8px 0",
+            "fontSize": "10px",
+            "letterSpacing": "0.1em"
+        }),
+        html.H2(f"${revenue:,.0f}", style={
+            "color": config.COLORS["text"],
+            "margin": "0",
+            "fontSize": "36px",
+            "fontWeight": "500",
+            "letterSpacing": "-1px",
+            "lineHeight": "1"
+        }),
+        html.P("all time", style={
+            "color": config.COLORS["muted"],
+            "margin": "4px 0 14px 0",
+            "fontSize": "11px"
+        }),
+        html.Div(
+            style={
+                "borderTop": f"0.5px solid {config.COLORS['border']}",
+                "paddingTop": "12px",
+                "display": "grid",
+                "gridTemplateColumns": "1fr 1fr",
+                "gap": "8px"
+            },
+            children=[
+                html.Div(children=[
+                    html.P("THIS MONTH", style={
+                        "color": config.COLORS["muted"],
+                        "margin": "0",
+                        "fontSize": "10px",
+                        "letterSpacing": "0.08em"
+                    }),
+                    html.P(f"${revenue_month:,.0f}", style={
+                        "color": config.COLORS["text"],
+                        "margin": "2px 0 0 0",
+                        "fontSize": "16px",
+                        "fontWeight": "500"
+                    })
+                ]),
+                html.Div(children=[
+                    html.P("AVG TICKET", style={
+                        "color": config.COLORS["muted"],
+                        "margin": "0",
+                        "fontSize": "10px",
+                        "letterSpacing": "0.08em"
+                    }),
+                    html.P(f"${ticket_avg:,.0f}", style={
+                        "color": config.COLORS["text"],
+                        "margin": "2px 0 0 0",
+                        "fontSize": "16px",
+                        "fontWeight": "500"
+                    })
+                ])
+            ]
+        )
+    ]
+)
 
     kpi_conversion = html.Div(
         style={
@@ -63,7 +103,7 @@ def get_layout():
             "textAlign": "center"
         },
         children=[
-            html.P("Conversion", style={
+            html.P(f"CONVERSION — {total:,} clients", style={
                 "color": config.COLORS["muted"],
                 "margin": "0 0 12px 0",
                 "fontSize": "10px",
@@ -314,7 +354,7 @@ html.Div(
                     "gap": "16px",
                     "marginBottom": "24px"
                 },
-                children=[kpi_universe, kpi_conversion, kpi_packages]
+                children=[kpi_revenue, kpi_conversion, kpi_packages]
             ),
             # Charts
             html.Div(
@@ -324,6 +364,36 @@ html.Div(
                     "gap": "16px"
                 },
                 children=[chart_clients, chart_packages]
+            ),
+            # Insight
+            html.Div(
+                style={
+                    "background": config.COLORS["card"],
+                    "borderRadius": "8px",
+                    "padding": "12px 20px",
+                    "display": "flex",
+                    "alignItems": "center",
+                    "gap": "8px",
+                    "marginTop": "12px",
+                    "border": f"0.5px solid {config.COLORS['border']}"
+                },
+                children=[
+                    html.Div(style={
+                        "width": "6px",
+                        "height": "6px",
+                        "borderRadius": "50%",
+                        "background": "#E24B4A",
+                        "flexShrink": "0"
+                    }),
+                    html.P(
+                        f"{clients_without_package:,} clients never purchased. At ${ticket_avg:,.0f} avg ticket, recovering 10% represents ~${round(clients_without_package * ticket_avg * 0.1):,} in potential revenue.",
+                        style={
+                            "color": config.COLORS["muted"],
+                            "margin": "0",
+                            "fontSize": "11px"
+                        }
+                    )
+                ]
             )
         ]
     )

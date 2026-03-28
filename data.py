@@ -71,3 +71,17 @@ def count_gifted_packages(df):
 def count_sold_packages(df):
     df_work = df[df["package_sold"] > 0]
     return df_work["package_id"].nunique()  
+
+def total_revenue(df):
+    return df["package_sold"].sum()
+
+def revenue_this_month(df):
+    df_work = df[df["package_sold"].notna()].copy()
+    df_work["p_created_at"] = df_work["p_created_at"].dt.tz_localize(None)
+    current_month = df_work["p_created_at"].dt.to_period("M").max()
+    df_work = df_work[df_work["p_created_at"].dt.to_period("M") == current_month]
+    return df_work["package_sold"].sum()
+
+def avg_ticket(df):
+    df_work = df[df["package_sold"] > 0]
+    return round(df_work["package_sold"].mean(), 2)
