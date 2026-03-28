@@ -10,7 +10,7 @@ load_dotenv()
 
 engine = create_engine(f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}")
 
-@cache.memoize(timeout=1300)
+@cache.memoize(timeout=86400)
 def fetch_clients_packages():
     sql = """
             SELECT * FROM mv_clients_packages

@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 from cache import cache
 import layout
 import auth
+from apscheduler.schedulers.background import BackgroundScheduler
+from data import fetch_clients_packages
 
 load_dotenv()
 
@@ -18,7 +20,7 @@ app = dash.Dash(
 
 cache.init_app(app.server, config={
     'CACHE_TYPE': 'SimpleCache',
-    'CACHE_DEFAULT_TIMEOUT': 1300
+    'CACHE_DEFAULT_TIMEOUT': 86400
 })
 
 # Layout raíz — decide qué mostrar según sesión
@@ -68,6 +70,15 @@ def route(session):
         return build_login_layout()
     
     return layout.get_layout()
+
+def refresh_data():
+    cache.delete_memoized(fetch_clients_packages)
+    fetch_clients_packages()
+    print(f"[cache] datos actualizados")
+
+    scheduler = BackgroundScheduler(timezone="America/Monterrey")
+    scheduler.add_job(refresh_data, 'cron', hour='6,14,22')
+    scheduler.start()
 
 if __name__ == "__main__":
     app.run(debug=True)
