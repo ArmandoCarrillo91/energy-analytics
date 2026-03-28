@@ -57,10 +57,11 @@ def handle_login(n_clicks, email_submit, password_submit, email, password):
         return None, "Ingresa tu email y contraseña", False
     user, error = auth.login_user(email, password)
     if error:
-        return None, "Credenciales incorrectas"
+        return None, "Credenciales incorrectas", False
     has_access = auth.check_tenant_access(str(user.id))
     if not has_access:
         return None, "No tienes acceso a este dashboard", False
+    
     return {"user_id": str(user.id), "email": user.email}, "", True
 
 @app.callback(
