@@ -38,7 +38,6 @@ scheduler.start()
 app.layout = html.Div([
     dcc.Location(id="url", refresh=False),
     dcc.Store(id="session-store", storage_type="session"),
-    html.Div(id="login-error", style={"display": "none"}),
     html.Div(id="page-content")
 ])
 
