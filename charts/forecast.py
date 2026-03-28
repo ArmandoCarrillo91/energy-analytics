@@ -2,29 +2,23 @@ import config
 from dash import html
 from dash_echarts import DashECharts
 
-def build_packages_chart(df):
-    periods = df["period"].astype(str).tolist()
-    peak_idx = df["package_id"].idxmax()
-    peak_month = df.loc[peak_idx, "period"]
-    peak_value = df["package_id"].max()
-    last_3_avg = round(df["package_id"].tail(3).mean())
-    prior_3_avg = round(df["package_id"].iloc[-6:-3].mean())
-    trend = round((last_3_avg - prior_3_avg) / prior_3_avg * 100)
-    trend_word = "down" if trend < 0 else "up"
-    narrative = f"Peak volume was {peak_value} packages in {peak_month}. The last 3 months averaged {last_3_avg} — {trend_word} {abs(trend)}% vs prior period. The gray line shows the 3-month trend."
-    values = df["package_id"].tolist()
-    moving_avg_raw = df["package_id"].rolling(window=3).mean()
-    moving_avg = [round(x, 1) if x == x else None for x in moving_avg_raw]
-    
+def build_forecast_chart(df):
+    weeks = df["week"].tolist()
+    expiring = df["expiring"].tolist()
+    remaining = df["remaining"].tolist()
+
+    total_active = df["remaining"].iloc[0]  # primer valor = total activos hoy
+    week1_expiring = df["expiring"].iloc[0]  # cuántos vencen esta semana
+    halfway = df[df["remaining"] <= total_active / 2].iloc[0]["week"]  # semana donde pierdes la mitad
+    narrative = f"You have {total_active} active clients today. Each bar shows how many expire that week — after {halfway}, you'll have lost more than half. The line tracks what's left. Use this to prioritize who to call first."
+
     option = {
         "textStyle": config.CHART_BASE["textStyle"],
         "title": {
-            "text": "Package Volume",
+            "text": "Active Client Forecast",
             "left": "center",
             "top": 10,
-            "textStyle": {
-                "color": config.COLORS["text"]
-            }
+            "textStyle": {"color": config.COLORS["text"]}
         },
         "tooltip": {
             "trigger": "axis",
@@ -37,7 +31,7 @@ def build_packages_chart(df):
             }
         },
         "legend": {
-            "data": ["Packages", "Moving Average"],
+            "data": ["Expiring", "Still Active"],
             "textStyle": {
                 "color": config.COLORS["muted"],
                 "fontSize": 11,
@@ -50,27 +44,25 @@ def build_packages_chart(df):
         },
         "xAxis": {
             "type": "category",
-            "data": periods,
-            "name": "Period",
+            "data": weeks,
+            "name": "Week",
             "nameLocation": "middle",
             "nameGap": 30,
             "axisLabel": {
                 "color": config.COLORS["text"],
-                "fontFamily": "JetBrains Mono, monospace"
+                "fontFamily": "JetBrains Mono, monospace",
+                "fontSize": 9,
+                "rotate": 15
             },
-            "nameTextStyle": {
-                "color": config.COLORS["muted"],
-                "fontSize": 12,
-                "fontFamily": "JetBrains Mono, monospace"
-            }
+            "nameTextStyle": config.CHART_AXIS["nameTextStyle"]
         },
         "yAxis": {
             "type": "value",
-            "name": "Packages",
+            "name": "Clients",
             "nameLocation": "middle",
             "nameGap": config.CHART_AXIS["nameGap"],
-            "nameTextStyle": config.CHART_AXIS["nameTextStyle"],
             "nameRotate": 90,
+            "nameTextStyle": config.CHART_AXIS["nameTextStyle"],
             "axisLabel": {
                 "color": config.COLORS["text"],
                 "fontFamily": "JetBrains Mono, monospace"
@@ -84,29 +76,30 @@ def build_packages_chart(df):
         },
         "series": [
             {
-                "name": "Packages",
-                "data": values,
+                "name": "Expiring",
                 "type": "bar",
+                "data": expiring,
                 "label": {
                     "show": True,
                     "position": "top",
-                    "color": config.COLORS["text"]
+                    "color": config.COLORS["text"],
+                    "fontSize": 10
                 },
-                "itemStyle": {
-                    "color": config.COLORS["primary"]
-                }
+                "itemStyle": {"color": config.COLORS["primary"]}
             },
             {
-                "name": "Moving Average",
+                "name": "Still Active",
                 "type": "line",
                 "smooth": True,
-                "showSymbol": False,
-                "data": moving_avg,
+                "showSymbol": True,
+                "data": remaining,
                 "label": {"show": False},
                 "lineStyle": {
                     "color": config.COLORS["trend_line"],
-                    "width": 2
-                }
+                    "width": 2,
+                    "type": "dashed"
+                },
+                "itemStyle": {"color": config.COLORS["trend_point"]}
             }
         ]
     }

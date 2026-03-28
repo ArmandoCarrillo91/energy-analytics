@@ -1,8 +1,18 @@
 import config
+from dash import html
+from dash_echarts import DashECharts
 
 def build_revenue_chart(df):
     
     periods = df["period"].astype(str).tolist()
+    peak_idx = df["package_sold"].idxmax()
+    peak_month = df.loc[peak_idx, "period"]
+    peak_value = round(df["package_sold"].max() / 1000, 1)
+    last_3_avg = round(df["package_sold"].tail(3).mean() / 1000, 1)
+    prior_3_avg = round(df["package_sold"].iloc[-6:-3].mean() / 1000, 1)
+    trend = round((last_3_avg - prior_3_avg) / prior_3_avg * 100)
+    trend_word = "down" if trend < 0 else "up"
+    narrative = f"Peak revenue hit ${peak_value}K in {peak_month}. The last 3 months averaged ${last_3_avg}K — {trend_word} {abs(trend)}% from peak. The trend line shows where revenue is heading."
     data = []
     for v in df["package_sold"].tolist():
         k = round(v / 1000, 1)
@@ -97,8 +107,39 @@ def build_revenue_chart(df):
                     "fontSize": 10,
                     "formatter": "${c}K"
                 },
-                "itemStyle": {"color": config.COLORS["primary"]}
+                "itemStyle": {"color": config.COLORS["primary"]},
+                "emphasis": {
+                    "itemStyle": {
+                        "color": "#FFD700"
+                    },
+                    "lineStyle": {
+                        "width": 4
+                    },
+                    "symbolSize": 10
+                },
+                "showSymbol": True,
+                "symbolSize": 6,
             }
         ]
     }
-    return option
+    return html.Div(
+        style={
+            "borderRadius": "12px",
+            "border": f"1px solid {config.COLORS['border']}",
+            "overflow": "hidden",
+            "background": config.COLORS["card"]
+        },
+        children=[
+            DashECharts(
+                option=option,
+                style={"height": "400px", "width": "100%"}
+            ),
+            html.P(narrative, style={
+                "color": config.COLORS["muted"],
+                "fontSize": "11px",
+                "fontStyle": "italic",
+                "padding": "8px 16px 12px",
+                "lineHeight": "1.5"
+            })
+        ]
+    )

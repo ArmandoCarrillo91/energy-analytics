@@ -7,6 +7,7 @@ df_packages = data.get_packages_per_month(df)  # 2. transforma
 df_revenue = data.get_revenue_per_month(df)
 
 
-print(df[["remaining_classes", "expiration_date"]].head(10))
-print(df["remaining_classes"].isna().sum())
-print(df["expiration_date"].isna().sum())
+df_forecast = data.get_expiration_forecast(df)
+
+print(data.count_active_clients(df))
+print(data.get_active_classes_stats(df))

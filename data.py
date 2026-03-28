@@ -2,32 +2,18 @@ import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from pandas import read_sql
+import pandas as pd
+from datetime import datetime
+from cache import cache
 
 load_dotenv()
 
 engine = create_engine(f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}")
 
+@cache.memoize(timeout=1300)
 def fetch_clients_packages():
     sql = """
-            SELECT
-                c.id as client_id
-                ,c.name as client_name
-                ,c.created_at as c_created_at
-                ,p.id as package_id
-                ,p.package_name
-                ,p.price as package_sold
-                ,p.created_at as p_created_at
-                ,p.remaining_classes
-                ,p.expiration_date
-                ,p.total_classes
-                ,pack.name 
-                ,pack.price
-                ,pack.number_of_classes
-            FROM clients c
-            LEFT JOIN client_packages_client_lnk cpcl ON c.id = cpcl.client_id 
-            LEFT JOIN client_packages p on cpcl.client_package_id = p.id 
-            LEFT JOIN client_packages_package_lnk cpp on p.id = cpp.client_package_id
-            LEFT JOIN packages pack on cpp.package_id = pack.id
+            SELECT * FROM mv_clients_packages
         """
     df = read_sql(sql, engine)
     return df
@@ -92,3 +78,59 @@ def get_revenue_per_month(df):
     df_work["period"] = df_work["p_created_at"].dt.to_period("M")
     result = df_work.groupby("period")["package_sold"].sum().reset_index()
     return result
+
+def get_expiration_forecast(df):
+    df_work = df[df["package_id"].notna()].copy()
+    df_work["expiration_date"] = pd.to_datetime(
+        df_work["expiration_date"]
+    ).dt.tz_localize(None)
+
+    today = datetime.now()
+
+    df_active = df_work[
+        (df_work["expiration_date"] > today) &
+        (df_work["remaining_classes"] > 0)
+    ].copy()
+
+    df_active["week"] = df_active["expiration_date"].dt.to_period("W")
+
+    result = df_active.groupby("week")["client_id"].nunique().reset_index()
+    result.columns = ["week", "expiring"]
+    result["week"] = result["week"].apply(
+        lambda p: p.end_time.strftime("%b %d")
+        )
+
+    total = result["expiring"].sum()
+    result["remaining"] = total - result["expiring"].cumsum() + result["expiring"]
+
+    return result
+
+def count_active_clients(df):
+    from datetime import datetime
+    import pandas as pd
+    df_work = df[df["package_id"].notna()].copy()
+    df_work["expiration_date"] = pd.to_datetime(
+        df_work["expiration_date"]
+    ).dt.tz_localize(None)
+    today = datetime.now()
+    active = df_work[
+        (df_work["remaining_classes"] > 0) &
+        (df_work["expiration_date"] > today)
+    ]
+    return active["client_id"].nunique()
+
+def get_active_classes_stats(df):
+    from datetime import datetime
+    import pandas as pd
+    df_work = df[df["package_id"].notna()].copy()
+    df_work["expiration_date"] = pd.to_datetime(
+        df_work["expiration_date"]
+    ).dt.tz_localize(None)
+    today = datetime.now()
+    active = df_work[
+        (df_work["remaining_classes"] > 0) &
+        (df_work["expiration_date"] > today)
+    ]
+    total_classes = int(active["remaining_classes"].sum())
+    avg_classes = round(active["remaining_classes"].mean())
+    return total_classes, avg_classes

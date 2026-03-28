@@ -4,6 +4,7 @@ import config
 from components.header import build_header
 from components.kpis import build_kpis
 from components.charts_layout import build_charts
+from components.active_clients import build_active_clients_section
 
 
 
@@ -20,5 +21,6 @@ def get_layout():
                 build_header(),
                 build_kpis(df),
                 build_charts(df)
+                # build_active_clients_section(df)
             ]
     )

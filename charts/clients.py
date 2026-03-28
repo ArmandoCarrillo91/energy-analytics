@@ -1,4 +1,6 @@
 import config
+from dash import html
+from dash_echarts import DashECharts
 
 def build_clients_chart(df):
     
@@ -6,6 +8,14 @@ def build_clients_chart(df):
     moving_avg = [round(x, 1) if x == x else None for x in moving_avg_raw]
 
     periods = df["period"].astype(str).tolist()
+    peak_idx = df["client_id"].idxmax()
+    peak_month = df.loc[peak_idx, "period"]
+    peak_value = df["client_id"].max()
+    last_3_avg = round(df["client_id"].tail(3).mean())
+    prior_3_avg = round(df["client_id"].iloc[-6:-3].mean())
+    trend = round((last_3_avg - prior_3_avg) / prior_3_avg * 100)
+    trend_word = "down" if trend < 0 else "up"
+    narrative = f"Peak growth was {peak_value} new clients in {peak_month}. The last 3 months averaged {last_3_avg} — {trend_word} {abs(trend)}% vs prior period. The gray line shows the 3-month trend."
     values = df["client_id"].tolist()
     option = {
         "textStyle": config.CHART_BASE["textStyle"],
@@ -89,6 +99,11 @@ def build_clients_chart(df):
             "itemStyle": {
                 "color": config.COLORS["primary"],
                 "fontFamily": "JetBrains Mono, monospace"
+            },
+            "emphasis": {
+                "itemStyle": {
+                    "color": "#FFD700"  # brighter amber on hover
+                }
             }
         },
         {
@@ -103,8 +118,33 @@ def build_clients_chart(df):
                 "fontFamily": "JetBrains Mono, monospace",
                 "width": 2
                 # "type": "dashed"
+            },
+            "emphasis": {
+                "lineStyle": {
+                    "width": 4  # thicker line on hover
+                }
             }
         }
         ]
     }
-    return option
+    return html.Div(
+        style={
+            "borderRadius": "12px",
+            "border": f"1px solid {config.COLORS['border']}",
+            "overflow": "hidden",
+            "background": config.COLORS["card"]
+        },
+        children=[
+            DashECharts(
+                option=option,
+                style={"height": "400px", "width": "100%"}
+            ),
+            html.P(narrative, style={
+                "color": config.COLORS["muted"],
+                "fontSize": "11px",
+                "fontStyle": "italic",
+                "padding": "8px 16px 12px",
+                "lineHeight": "1.5"
+            })
+        ]
+    )
