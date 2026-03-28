@@ -1,4 +1,5 @@
 import dash
+import os
 from dash import Input, Output, State, html
 from dotenv import load_dotenv
 from cache import cache
