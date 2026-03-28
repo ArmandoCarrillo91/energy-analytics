@@ -15,6 +15,7 @@ def get_layout():
             "borderRadius": "12px",
             "border": f"1px solid {config.COLORS['border']}",
             "minWidth": "160px",
+            "textAlign": "center"
         },
         children=[
             html.P("Total Clients", style={
@@ -25,7 +26,7 @@ def get_layout():
                 "letterSpacing": "0.1em",
                 "textTransform": "uppercase"
             }),
-            html.H2(total, style={
+            html.H2(f"{total:,}", style={
                 "color": config.COLORS["text"],
                 "margin": "0",
                 "fontSize": "48px",
@@ -33,19 +34,26 @@ def get_layout():
                 "fontFamily": "'JetBrains Mono', monospace",
                 "letterSpacing": "-1px"
             })
-        ]
+        ],
     )
 
-    chart_clients = DashECharts(
-        option=clients.build_clients_chart(df_monthly),
-        style={
-            "height": "400px",
-            "width": "100%",
-            "background": config.COLORS["card"],
-            "gridTemplateColumns": "repeat(2, 1fr)",
-
+    chart_clients = html.Div(
+    style={
+        "borderRadius": "12px",
+        "border": f"1px solid {config.COLORS['border']}",
+        "overflow": "hidden",
+        "background": config.COLORS["card"]
+    },
+    children=[
+        DashECharts(
+            option=clients.build_clients_chart(df_monthly),
+            style={
+                "height": "400px",
+                "width": "100%",
             }
-    )
+        )
+    ]
+)
 
     return html.Div(
         style={

@@ -10,9 +10,33 @@ def build_clients_chart(df):
     option = {
         "title": {
             "text": "New Clients Over Time",
+            "top": 15,
             "left": "center",
             "textStyle": {
-                "color": config.COLORS["text"]
+                "color": config.COLORS["text"],
+                "fontFamily": "JetBrains Mono, monospace"
+            }
+        },
+        "legend": {
+            "data": ["New Clients", "Moving Average"],
+            "textStyle": {
+                "color": config.COLORS["muted"],
+                "fontSize": 11,
+                "fontFamily": "JetBrains Mono, monospace"
+            },
+            "bottom": 0,
+            "left": "left",
+            "itemWidth": 12,
+            "itemHeight": 8
+        },
+        "tooltip": {
+            "trigger": "axis",
+            "backgroundColor": config.COLORS["card"],
+            "borderColor": config.COLORS["border"],
+            "textStyle": {
+                "color": config.COLORS["text"],
+                "fontFamily": "JetBrains Mono, monospace",
+                "fontSize": 11
             }
         },
         "xAxis": {
@@ -20,39 +44,63 @@ def build_clients_chart(df):
             "data": periods,
             "name": "Period",
             "axisLabel": {
-                "color": config.COLORS["text"]
-            }
+                "color": config.COLORS["text"],
+                "fontFamily": "JetBrains Mono, monospace"
+            },
+            "nameTextStyle": {
+                "color": config.COLORS["muted"],
+                "fontSize": 12,
+                "fontFamily": "JetBrains Mono, monospace"
+
+            },
+            "nameLocation": "middle",
+            "nameGap": 30
         },
         "yAxis": {
             "type": "value",
             "name": "Clients",
             "axisLabel": {
-                "color": config.COLORS["text"]
+                "color": config.COLORS["text"],
+                "fontFamily": "JetBrains Mono, monospace"
+            },
+            "nameLocation": "middle",
+            "nameGap": 40,
+            "nameRotate": 90,
+            "splitLine": {
+            "lineStyle": {
+                "type": "dashed",
+                "color": config.COLORS["border"]
+                }
             }
-
         },
         "series": [{
+            "name": "New Clients",
             "data": values,
-            "type": "line",
+            "type": "bar",
             "smooth": True,
             "label": {
                 "show": True,
                 "position": "top",
-                "color": config.COLORS["text"]
+                "color": config.COLORS["text"],
+                "fontFamily": "JetBrains Mono, monospace"
             },
-            "lineStyle": {
-                "color": config.COLORS["primary"]
+            "itemStyle": {
+                "color": config.COLORS["primary"],
+                "fontFamily": "JetBrains Mono, monospace"
             }
         },
         {
             "name": "Moving Average",
             "type": "line",
             "smooth": True,
+            "showSymbol": False,
             "data": moving_avg,
             "label": {"show": False},
             "lineStyle": {
-                "color": config.COLORS["secondary"],
-                "type": "dashed"
+                "color": config.COLORS["trend_line"],
+                "fontFamily": "JetBrains Mono, monospace",
+                "width": 2
+                # "type": "dashed"
             }
         }
         ]
