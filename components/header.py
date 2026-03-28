@@ -6,7 +6,7 @@ def build_header():
         style={
             "background": "#1A1A1A",
             "borderRadius": "12px",
-            "padding": "20px 28px",
+            "padding": "28px 40px",
             "display": "flex",
             "justifyContent": "space-between",
             "alignItems": "center",
@@ -34,7 +34,7 @@ def build_header():
                     ),
                     html.H1("Pulso", style={
                         "color": "#FFFFFF",
-                        "fontSize": "28px",
+                        "fontSize": "36px",
                         "fontWeight": "500",
                         "margin": "0",
                         "lineHeight": "1"

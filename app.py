@@ -44,6 +44,7 @@ app.layout = html.Div([
 @app.callback(
     Output("session-store", "data"),
     Output("login-error", "children"),
+    Output("login-button", "disabled"),
     Input("login-button", "n_clicks"),
     Input("login-email", "n_submit"),
     Input("login-password", "n_submit"),
@@ -53,14 +54,14 @@ app.layout = html.Div([
 )
 def handle_login(n_clicks, email_submit, password_submit, email, password):
     if not email or not password:
-        return None, "Ingresa tu email y contraseña"
+        return None, "Ingresa tu email y contraseña", False
     user, error = auth.login_user(email, password)
     if error:
         return None, "Credenciales incorrectas"
     has_access = auth.check_tenant_access(str(user.id))
     if not has_access:
-        return None, "No tienes acceso a este dashboard"
-    return {"user_id": str(user.id), "email": user.email}, ""
+        return None, "No tienes acceso a este dashboard", False
+    return {"user_id": str(user.id), "email": user.email}, "", True
 
 @app.callback(
     Output("page-content", "children"),

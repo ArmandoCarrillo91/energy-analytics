@@ -8,7 +8,7 @@ def build_login_layout():
             html.Div(className="login-logo", children=[
                 html.Img(
                     src="/assets/logo-aa.svg",
-                    style={"display": "block", "margin": "0 auto 24px", "width": "52px", "height": "52px"}
+                    style={"display": "block", "margin": "0 auto 24px", "width": "72px", "height": "72px"}
                 ),
                 html.Div("armandoanalytics", className="login-logo-text")
             ]),
