@@ -9,10 +9,6 @@ from components.insight import build_insight
 import charts.forecast as forecast
 from components.active_clients import build_active_clients_section
 
-
-
-
-
 def build_charts(df):
     df_monthly = data.get_clients_per_month(df)
     df_packages = data.get_packages_per_month(df)

@@ -10,14 +10,13 @@ def build_insight(df):
 
     return html.Div(
         style={
-            "background": config.COLORS["card"],
-            "borderRadius": "8px",
-            "padding": "12px 20px",
+            "background": "#1A1A1A",
+            "borderRadius": "12px",
+            "padding": "16px 24px",
             "display": "flex",
             "alignItems": "center",
-            "gap": "8px",
-            "marginTop": "12px",
-            "border": f"0.5px solid {config.COLORS['border']}"
+            "gap": "12px",
+            "marginTop": "0",
         },
         children=[
             html.Div(style={
@@ -28,11 +27,19 @@ def build_insight(df):
                 "flexShrink": "0"
             }),
             html.P(
-                f"{clients_without_package:,} clients never purchased. At ${ticket_avg:,.0f} avg ticket, recovering 10% represents ~${potential:,} in potential revenue.",
+                children=[
+                    html.Span(f"{clients_without_package:,} clients", style={"color": config.COLORS["primary"], "fontWeight": "500"}),
+                    html.Span(" never purchased. At "),
+                    html.Span(f"${ticket_avg:,.0f}", style={"color": config.COLORS["primary"], "fontWeight": "500"}),
+                    html.Span(" avg ticket, recovering 10% represents ~"),
+                    html.Span(f"${potential:,}", style={"color": config.COLORS["primary"], "fontWeight": "500"}),
+                    html.Span(" in potential revenue."),
+                ],
                 style={
-                    "color": config.COLORS["muted"],
+                    "color": "rgba(255,255,255,0.7)",
                     "margin": "0",
-                    "fontSize": "11px"
+                    "fontSize": "12px",
+                    "lineHeight": "1.5"
                 }
             )
         ]

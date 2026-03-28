@@ -14,8 +14,8 @@ def build_active_clients_section(df):
 
     kpi_active = html.Div(
         style={
-            "background": config.COLORS["card"],
-            "padding": "20px",
+            "background": "#FFFFFF",
+            "padding": "24px 20px",
             "borderRadius": "12px",
             "border": f"1px solid {config.COLORS['border']}",
             "display": "flex",
@@ -35,7 +35,7 @@ def build_active_clients_section(df):
             html.H2(f"{active:,}", style={
                 "color": config.COLORS["text"],
                 "margin": "0",
-                "fontSize": "42px",
+                "fontSize": "48px",
                 "fontWeight": "500",
                 "lineHeight": "1"
             }),
@@ -49,8 +49,8 @@ def build_active_clients_section(df):
 
     kpi_classes = html.Div(
         style={
-            "background": config.COLORS["card"],
-            "padding": "20px",
+            "background": "#FFFFFF",
+            "padding": "24px 28px",
             "borderRadius": "12px",
             "border": f"1px solid {config.COLORS['border']}",
             "display": "flex",
@@ -71,7 +71,7 @@ def build_active_clients_section(df):
                         html.H3(f"{total_classes:,}", style={
                             "color": config.COLORS["text"],
                             "margin": "0",
-                            "fontSize": "32px",
+                            "fontSize": "36px",
                             "fontWeight": "500"
                         }),
                         html.P("total classes left", style={
@@ -89,7 +89,7 @@ def build_active_clients_section(df):
                         html.H3(f"{avg_classes}", style={
                             "color": config.COLORS["text"],
                             "margin": "0",
-                            "fontSize": "32px",
+                            "fontSize": "36px",
                             "fontWeight": "500"
                         }),
                         html.P("avg per client", style={
@@ -120,17 +120,17 @@ def build_active_clients_section(df):
 
     kpi_expiring = html.Div(
         style={
-            "background": config.COLORS["card"],
-            "padding": "20px",
+            "background": "#FFFDF5",
+            "padding": "24px 28px",
             "borderRadius": "12px",
-            "border": f"1px solid #EF9F27",
+            "border": f"2px solid {config.COLORS['primary']}",
             "display": "flex",
             "flexDirection": "column",
             "justifyContent": "center"
         },
         children=[
             html.P("EXPIRING THIS WEEK", style={
-                "color": "#EF9F27",
+                "color": config.COLORS["primary"],
                 "margin": "0 0 12px 0",
                 "fontSize": "10px",
                 "letterSpacing": "0.1em"
@@ -140,9 +140,9 @@ def build_active_clients_section(df):
                 children=[
                     html.Div(children=[
                         html.H3(f"{expiring_this_week}", style={
-                            "color": "#EF9F27",
+                            "color": config.COLORS["primary"],
                             "margin": "0",
-                            "fontSize": "32px",
+                            "fontSize": "36px",
                             "fontWeight": "500"
                         }),
                         html.P("clients expiring", style={
@@ -160,7 +160,7 @@ def build_active_clients_section(df):
                         html.H3(f"{pct_expiring}%", style={
                             "color": config.COLORS["text"],
                             "margin": "0",
-                            "fontSize": "32px",
+                            "fontSize": "36px",
                             "fontWeight": "500"
                         }),
                         html.P("of active base", style={
