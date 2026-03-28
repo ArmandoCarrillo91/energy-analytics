@@ -43,7 +43,7 @@ def build_charts(df):
     return html.Div(
         style={
             "display": "grid",
-            "gridTemplateColumns": "repeat(auto-fill, minmax(500px, 1fr))",
+            "gridTemplateColumns": "1fr 1fr",
             "gap": "16px"
         },
         children=[chart_clients, chart_packages]
