@@ -4,14 +4,7 @@ from dash_echarts import DashECharts
 
 def build_packages_chart(df):
     periods = df["period"].astype(str).tolist()
-    peak_idx = df["package_id"].idxmax()
-    peak_month = df.loc[peak_idx, "period"]
-    peak_value = df["package_id"].max()
-    last_3_avg = round(df["package_id"].tail(3).mean())
-    prior_3_avg = round(df["package_id"].iloc[-6:-3].mean())
-    trend = round((last_3_avg - prior_3_avg) / prior_3_avg * 100)
-    trend_word = "down" if trend < 0 else "up"
-    narrative = f"Peak volume was {peak_value} packages in {peak_month}. The last 3 months averaged {last_3_avg} — {trend_word} {abs(trend)}% vs prior period. The gray line shows the 3-month trend."
+    narrative = "Packages: unique packages purchased that month. Moving Average: 3-month rolling mean that smooths monthly volatility to reveal the underlying trend."
     values = df["package_id"].tolist()
     moving_avg_raw = df["package_id"].rolling(window=3).mean()
     moving_avg = [round(x, 1) if x == x else None for x in moving_avg_raw]

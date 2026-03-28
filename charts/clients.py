@@ -7,15 +7,8 @@ def build_clients_chart(df):
     moving_avg_raw = df["client_id"].rolling(window=3).mean()
     moving_avg = [round(x, 1) if x == x else None for x in moving_avg_raw]
 
-    periods = df["period"].astype(str).tolist()
-    peak_idx = df["client_id"].idxmax()
-    peak_month = df.loc[peak_idx, "period"]
-    peak_value = df["client_id"].max()
-    last_3_avg = round(df["client_id"].tail(3).mean())
-    prior_3_avg = round(df["client_id"].iloc[-6:-3].mean())
-    trend = round((last_3_avg - prior_3_avg) / prior_3_avg * 100)
-    trend_word = "down" if trend < 0 else "up"
-    narrative = f"Peak growth was {peak_value} new clients in {peak_month}. The last 3 months averaged {last_3_avg} — {trend_word} {abs(trend)}% vs prior period. The gray line shows the 3-month trend."
+    periods = df["period"].astype(str).tolist()    
+    narrative = "New Clients: unique clients registered that month. Moving Average: 3-month rolling mean that smooths monthly volatility to reveal the underlying trend."
     values = df["client_id"].tolist()
     option = {
         "textStyle": config.CHART_BASE["textStyle"],
