@@ -1,4 +1,4 @@
-from dash import html, dcc, Input, Output, State, callback
+from dash import html, dcc
 import config
 
 def build_login_layout():
@@ -19,38 +19,28 @@ def build_login_layout():
                     "borderRadius": "12px",
                     "padding": "48px 40px",
                     "width": "100%",
-                    "maxWidth": "400px",
+                    "maxWidth": "420px",
                 },
                 children=[
-                    # Header
                     html.Div("⚡", style={"fontSize": "32px", "marginBottom": "8px"}),
-                    html.H2(
-                        "Energy Cycle Studio",
-                        style={
-                            "color": config.COLORS["primary"],
-                            "fontSize": "20px",
-                            "fontWeight": "700",
-                            "marginBottom": "4px"
-                        }
-                    ),
-                    html.P(
-                        "Dashboard de Analytics",
-                        style={
-                            "color": config.COLORS["muted"],
-                            "fontSize": "13px",
-                            "marginBottom": "32px"
-                        }
-                    ),
-
-                    # Email
-                    html.Label(
-                        "Email",
-                        style={"fontSize": "12px", "color": config.COLORS["muted"], "marginBottom": "6px", "display": "block"}
-                    ),
+                    html.H2("Energy Cycle Studio", style={
+                        "color": config.COLORS["primary"],
+                        "fontSize": "20px",
+                        "fontWeight": "700",
+                        "marginBottom": "4px"
+                    }),
+                    html.P("Dashboard de Analytics", style={
+                        "color": config.COLORS["muted"],
+                        "fontSize": "13px",
+                        "marginBottom": "32px"
+                    }),
+                    html.Label("Email", style={"fontSize": "12px", "color": config.COLORS["muted"], "marginBottom": "6px", "display": "block"}),
                     dcc.Input(
                         id="login-email",
                         type="email",
-                        placeholder="juan@energy.com",
+                        placeholder="correo@ejemplo.com",
+                        n_submit=0,
+                        debounce=False,
                         style={
                             "width": "100%",
                             "padding": "10px 14px",
@@ -61,19 +51,15 @@ def build_login_layout():
                             "fontFamily": "JetBrains Mono, monospace",
                             "fontSize": "14px",
                             "marginBottom": "16px",
-                            "boxSizing": "border-box"
                         }
                     ),
-
-                    # Password
-                    html.Label(
-                        "Contraseña",
-                        style={"fontSize": "12px", "color": config.COLORS["muted"], "marginBottom": "6px", "display": "block"}
-                    ),
+                    html.Label("Contraseña", style={"fontSize": "12px", "color": config.COLORS["muted"], "marginBottom": "6px", "display": "block"}),
                     dcc.Input(
                         id="login-password",
                         type="password",
                         placeholder="••••••••",
+                        n_submit=0,
+                        debounce=False,
                         style={
                             "width": "100%",
                             "padding": "10px 14px",
@@ -84,30 +70,21 @@ def build_login_layout():
                             "fontFamily": "JetBrains Mono, monospace",
                             "fontSize": "14px",
                             "marginBottom": "24px",
-                            "boxSizing": "border-box"
                         }
                     ),
-
-                    # Botón
-                    html.Button(
-                        "Entrar",
-                        id="login-button",
-                        style={
-                            "width": "100%",
-                            "padding": "12px",
-                            "background": config.COLORS["primary"],
-                            "color": "#000",
-                            "border": "none",
-                            "borderRadius": "8px",
-                            "fontFamily": "JetBrains Mono, monospace",
-                            "fontSize": "14px",
-                            "fontWeight": "700",
-                            "cursor": "pointer",
-                            "marginBottom": "16px"
-                        }
-                    ),
-
-                    # Error message
+                    html.Button("Entrar", id="login-button", style={
+                        "width": "100%",
+                        "padding": "12px",
+                        "background": config.COLORS["primary"],
+                        "color": "#000",
+                        "border": "none",
+                        "borderRadius": "8px",
+                        "fontFamily": "JetBrains Mono, monospace",
+                        "fontSize": "14px",
+                        "fontWeight": "700",
+                        "cursor": "pointer",
+                        "marginBottom": "16px"
+                    }),
                     html.Div(id="login-error", style={
                         "color": config.COLORS["danger"],
                         "fontSize": "13px",

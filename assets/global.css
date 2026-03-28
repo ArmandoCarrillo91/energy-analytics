@@ -5,6 +5,19 @@
     font-family: 'JetBrains Mono', monospace;
 }
 
+input, textarea, select {
+    padding: revert;
+    line-height: 1.5;
+    overflow: visible;
+}
+
 body {
     background-color: #FFFAFA;
+}
+
+.dash-input-element {
+    height: auto !important;
+    line-height: 1.6 !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
 }
