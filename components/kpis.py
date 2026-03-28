@@ -25,7 +25,7 @@ def build_kpi_revenue(df):
             html.H2(f"${revenue:,.0f}", style={
                 "color": config.COLORS["text"],
                 "margin": "0",
-                "fontSize": "36px",
+                "fontSize": "48px",
                 "fontWeight": "500",
                 "letterSpacing": "-1px",
                 "lineHeight": "1"
@@ -109,7 +109,7 @@ def build_kpi_conversion(df):
                         html.H3(f"{clients_with_packages:,}", style={
                             "color": config.COLORS["text"],
                             "margin": "0",
-                            "fontSize": "24px",
+                            "fontSize": "32px",
                             "fontWeight": "500"
                         }),
                         html.P("purchased", style={
@@ -204,7 +204,7 @@ def build_kpi_packages(df):
                         html.H3(f"{sold_packages:,}", style={
                             "color": config.COLORS["text"],
                             "margin": "0",
-                            "fontSize": "24px",
+                            "fontSize": "32px",
                             "fontWeight": "500"
                         }),
                         html.P("sold", style={

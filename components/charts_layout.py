@@ -4,11 +4,13 @@ import config
 import data
 import charts.clients as clients
 import charts.packages as packages
+import charts.revenue as revenue
 
 
 def build_charts(df):
     df_monthly = data.get_clients_per_month(df)
     df_packages = data.get_packages_per_month(df)
+    df_revenue = data.get_revenue_per_month(df)
 
     chart_clients = html.Div(
         style={
@@ -40,11 +42,26 @@ def build_charts(df):
         ]
     )
 
+    chart_revenue = html.Div(
+    style={
+        "borderRadius": "12px",
+        "border": f"1px solid {config.COLORS['border']}",
+        "overflow": "hidden",
+        "background": config.COLORS["card"]
+    },
+    children=[
+        DashECharts(
+            option=revenue.build_revenue_chart(df_revenue),
+            style={"height": "400px", "width": "100%"}
+            )
+        ]
+    )
+
     return html.Div(
         style={
             "display": "grid",
             "gridTemplateColumns": "1fr 1fr",
             "gap": "16px"
         },
-        children=[chart_clients, chart_packages]
+        children=[chart_clients, chart_packages, chart_revenue]
     )
