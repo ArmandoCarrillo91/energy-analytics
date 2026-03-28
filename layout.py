@@ -11,45 +11,86 @@ def get_layout():
     kpi_total_clients = html.Div(
         style={
             "background": config.COLORS["card"],
-            "padding": "24px",
+            "padding": "16px 20px",
+            "borderRadius": "12px",
+            "border": f"1px solid {config.COLORS['border']}",
+            "minWidth": "160px",
         },
         children=[
-            html.H2(total),
-            html.P("Total Clients")
+            html.P("Total Clients", style={
+                "color": config.COLORS["muted"],
+                "margin": "0",
+                "fontSize": "12px",
+                "fontFamily": "'JetBrains Mono', monospace",
+                "letterSpacing": "0.1em",
+                "textTransform": "uppercase"
+            }),
+            html.H2(total, style={
+                "color": config.COLORS["text"],
+                "margin": "0",
+                "fontSize": "48px",
+                "fontWeight": "700",
+                "fontFamily": "'JetBrains Mono', monospace",
+                "letterSpacing": "-1px"
+            })
         ]
     )
 
     chart_clients = DashECharts(
         option=clients.build_clients_chart(df_monthly),
-        style={"height": "400px", "background": config.COLORS["card"]}
+        style={
+            "height": "400px",
+            "width": "100%",
+            "background": config.COLORS["card"],
+            "gridTemplateColumns": "repeat(2, 1fr)",
+
+            }
     )
 
     return html.Div(
         style={
             "background": config.COLORS["background"],
-            "padding": "24px",
+            "padding": "32px 40px",
             "minHeight": "100vh"
         },
         children=[
-        
+            # Header
+            html.Div(
+                style={"marginBottom": "32px"},
+                children=[
+                    html.H1("Pulso", style={
+                        "color": config.COLORS["text"],
+                        "fontSize": "32px",
+                        "fontWeight": "700",
+                        "fontFamily": "'JetBrains Mono', monospace",
+                        "margin": "0"
+                    }),
+                    html.P("Vista ejecutiva del negocio", style={
+                        "color": config.COLORS["muted"],
+                        "fontSize": "14px",
+                        "fontFamily": "'JetBrains Mono', monospace",
+                        "margin": "0"
+                    })
+                ]
+            ),
+            # KPIs
             html.Div(
                 style={
                     "display": "grid",
-                    "gridTemplateColumns": "repeat(4, 1fr)",
+                    "gridTemplateColumns": "repeat(auto-fill, minmax(200px, 1fr))",
                     "gap": "16px",
                     "marginBottom": "24px"
                 },
-                children=[
-                    kpi_total_clients
-                ]
+                children=[kpi_total_clients]
             ),
+            # Charts
             html.Div(
                 style={
                     "display": "grid",
-                    "gridTemplateColumns": "repeat(2, 1fr)",
+                    "gridTemplateColumns": "repeat(auto-fill, minmax(500px, 1fr))",
                     "gap": "16px"
                 },
                 children=[chart_clients]
-             )
+            )
         ]
-    )
+)
